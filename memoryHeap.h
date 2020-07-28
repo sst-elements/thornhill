@@ -1,8 +1,8 @@
-// Copyright 2009-2019 NTESS. Under the terms
+// Copyright 2009-2020 NTESS. Under the terms
 // of Contract DE-NA0003525 with NTESS, the U.S.
 // Government retains certain rights in this software.
 //
-// Copyright (c) 2009-2019, NTESS
+// Copyright (c) 2009-2020, NTESS
 // All rights reserved.
 //
 // Portions are copyright of other developers:
@@ -19,44 +19,41 @@
 #include <sst/core/component.h>
 
 namespace SST {
-    namespace Thornhill {
+namespace Thornhill {
 
-        class MemoryHeap : public Component {
-        public:
-            SST_ELI_REGISTER_COMPONENT(
-                MemoryHeap,
-            "thornhill",
-            "MemoryHeap",
-            SST_ELI_ELEMENT_VERSION(1,0,0),
-            "",
-            COMPONENT_CATEGORY_UNCATEGORIZED
-            )
-            SST_ELI_DOCUMENT_PORTS(
-            { "detailed%(num_ports)d", "Port connected to Memory Heap client", {}},
-            )
+class MemoryHeap : public Component {
+  public:
+    SST_ELI_REGISTER_COMPONENT(
+        MemoryHeap,
+        "thornhill",
+        "MemoryHeap",
+        SST_ELI_ELEMENT_VERSION(1,0,0),
+        "",
+        COMPONENT_CATEGORY_UNCATEGORIZED
+    )
+    SST_ELI_DOCUMENT_PORTS(
+        {"detailed%(num_ports)d", "Port connected to Memory Heap client", {}},
+    )
 
-        public:
-            MemoryHeap(ComponentId_t id, Params &params);
+  public:
+    MemoryHeap( ComponentId_t id, Params& params );
+    ~MemoryHeap(){};
 
-            ~MemoryHeap() {};
+	void setup() {}
+    void finish() {}
+    void init( unsigned int phase ) {}
 
-            void setup() {}
+  private:
+    void eventHandler( SST::Event* ev, int src );
 
-            void finish() {}
+    std::vector<Link*>  		m_links;
+	uint64_t                    m_currentVaddr;
+	Output						m_output;
 
-            void init(unsigned int phase) {}
+	MemoryHeap() : Component(-1) {}
 
-        private:
-            void eventHandler(SST::Event *ev, int src);
+};
 
-            std::vector<Link *> m_links;
-            uint64_t m_currentVaddr;
-            Output m_output;
-
-            MemoryHeap() : Component(-1) {}
-
-        };
-
-    }
+}
 }
 #endif

@@ -1,8 +1,8 @@
-// Copyright 2009-2019 NTESS. Under the terms
+// Copyright 2009-2020 NTESS. Under the terms
 // of Contract DE-NA0003525 with NTESS, the U.S.
 // Government retains certain rights in this software.
 //
-// Copyright (c) 2009-2019, NTESS
+// Copyright (c) 2009-2020, NTESS
 // All rights reserved.
 //
 // Portions are copyright of other developers:
@@ -24,35 +24,33 @@
 #include "types.h"
 
 namespace SST {
-    namespace Thornhill {
+namespace Thornhill {
 
-        class MemoryHeapEvent : public SST::Event {
+class MemoryHeapEvent : public SST::Event {
 
-        public:
-            typedef uint64_t Key;
+public:
+	typedef uint64_t Key;
 
-            enum {
-                Alloc, Free
-            } type;
+	enum { Alloc, Free } type;
 
-            Key key;
-            size_t length;
-            SimVAddr addr;
+	Key 		key;
+	size_t		length;
+	SimVAddr    addr;
 
-        private:
+private:
 
-            void serialize_order(SST::Core::Serialization::serializer &ser) override {
-                Event::serialize_order(ser);
-                ser & type;
-                ser & key;
-                ser & length;
-                ser & addr;
-            }
-
-            ImplementSerializable(SST::Thornhill::MemoryHeapEvent);
-        };
-
+    void serialize_order(SST::Core::Serialization::serializer &ser)  override {
+        Event::serialize_order(ser);
+		ser & type;
+        ser & key;
+        ser & length;
+        ser & addr;
     }
+
+    ImplementSerializable(SST::Thornhill::MemoryHeapEvent);
+};
+
+}
 }
 
 #endif
